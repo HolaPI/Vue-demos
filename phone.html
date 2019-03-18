@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Phonebook</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        #header{
+            width: 100%;
+            height: 40px;
+            background-color: #aaa;
+            color: #fff;
+            text-align: center;
+            line-height: 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        #header button{
+            height: 100%;
+            padding: 0 5px;
+        }
+        #header button:nth-of-type(1){
+            float: left;
+        }
+        #header button:nth-of-type(2){
+            float: right;
+        }
+        #list{
+            position: relative;
+            top: 40px;
+            overflow: hidden;
+        }
+        #list .user_list p{
+            background-color: #ccc;
+            padding: 3px 6px;
+        }
+        #list .user_list ul li{
+            height: 40px;
+            line-height: 40px;
+            padding: 6px;
+            border-bottom: 1px solid #ccc;
+        }
+        #list .user_index{
+            position: fixed;
+            right: 8px;
+            top: 50%;
+            font-size: 20px;
+        }
+        #list .user_index li{
+            margin: 5px 0px;
+        }
+        #alert{
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            z-index: 20;
+            display: none;
+        }
+        #alert .alert_content{
+            width: 240px;
+            height: 150px;
+            background-color: #fff;
+            border-radius: 5px;
+            margin: auto;
+            padding: 10px;
+        }
+        #alert .alert_title{
+            font-weight: bold;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        #alert .alert_body{
+            padding: 5px;
+            font-size: 20px;
+            height: 80px;
+            line-height: 80px;
+            text-align: center;
+        }
+        #alert .alert_btn{
+            display: flex;
+            justify-content: space-around;
+        }
+        #alert .alert_btn button{
+            height: 25px;
+            width: 60px;
+        }
+    </style>
+    <script src="./vue-product.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-header custom-title="Phonebook" custom-fixed>
+            <button slot="left" @touchstart="backBtn">Back</button>
+            <button slot="right" @touchstart="homeBtn">Home</button>
+        </my-header>
+        <my-list :user-data="userData"></my-list>
+        <my-alert custom-title="Call">
+            <button slot="cancel" @touchstart="cancelCall">Cancel</button>
+            <button slot="confirm" @touchstart="confirmCall">Confirm</button>
+        </my-alert>
+    </div>
+    <script>
+        var busVM = new Vue();
+        var userData = [
+            {
+                "index" : "A",
+                "users" : [
+                    {
+                        "name" : "a1",
+                        "tele" : "13512312300"
+                    },
+                    {
+                        "name" : "a2",
+                        "tele" : "13512312301"
+                    },
+                    {
+                        "name" : "a3",
+                        "tele" : "13512312302"
+                    }
+                ]
+            },
+            {
+                "index" : "B",
+                "users" : [
+                    {
+                        "name" : "b1",
+                        "tele" : "13512312303"
+                    },
+                    {
+                        "name" : "b2",
+                        "tele" : "13512312304"
+                    },
+                    {
+                        "name" : "b3",
+                        "tele" : "13512312305"
+                    }
+                ]
+            },
+            {
+                "index" : "D",
+                "users" : [
+                    {
+                        "name" : "d1",
+                        "tele" : "13500000006"
+                    },
+                    {
+                        "name" : "d2",
+                        "tele" : "13500000007"
+                    },
+                    {
+                        "name" : "d3",
+                        "tele" : "13500000008"
+                    }
+                ]
+            },{
+                "index" : "F",
+                "users" : [
+                    {
+                        "name" : "f1",
+                        "tele" : "13500000009"
+                    },
+                    {
+                        "name" : "f2",
+                        "tele" : "13500000010"
+                    }
+                ]
+            },
+            {
+                "index" : "H",
+                "users" : [
+                    {
+                        "name" : "h1",
+                        "tele" : "13500000011"
+                    },
+                    {
+                        "name" : "h2",
+                        "tele" : "13500000012"
+                    },
+                    {
+                        "name" : "h3",
+                        "tele" : "13500000013"
+                    }
+                ]
+            },
+            {
+                "index" : "L",
+                "users" : [
+                    {
+                        "name" : "l1",
+                        "tele" : "13500000014"
+                    },
+                    {
+                        "name" : "l2",
+                        "tele" : "13500000015"
+                    },
+                    {
+                        "name" : "l3",
+                        "tele" : "13500000016"
+                    }
+                ]
+            },
+            {
+                "index" : "W",
+                "users" : [
+                    {
+                        "name" : "w1",
+                        "tele" : "13500000017"
+                    },
+                    {
+                        "name" : "w2",
+                        "tele" : "13500000018"
+                    },
+                    {
+                        "name" : "w3",
+                        "tele" : "13500000019"
+                    },
+                    {
+                        "name" : "w4",
+                        "tele" : "13500000020"
+                    }
+                ]
+            }
+        ];
+        Vue.component("my-header", {
+            template : `<div id="header" :style="{ 'position' : customFixed ? 'fixed' : 'static' }">
+                            <slot name="left"></slot>
+                            <span>{{ customTitle }}</span>
+                            <slot name="right"></slot>
+                        </div>`,
+            props : {
+                "customTitle" : {
+                    type : String,
+                    default : "Title"
+                },
+                "customFixed" : {
+                    type : Boolean,
+                    default : false
+                }
+            }
+        });
+        Vue.component("my-list", {
+            template : `<div id="list">
+                            <ul class="user_list" ref="listUser" @touchmove="bMove = true">
+                                <li v-for="item in userData">
+                                    <p>{{ item.index }}</p>
+                                    <ul>
+                                        <li @touchend="showTele(user.tele)" v-for="user in item.users">{{ user.name }}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="user_index" ref="listIndex">
+                                <li @touchstart="setScroll" v-for="item in userIndex">{{ item }}</li>
+                            </ul>
+                        </div>`,
+            data(){
+                return {
+                    bMove : false
+                }
+            },
+            props : {
+                "user-data" : {
+                    type : Array,
+                    default : function(){
+                        return [];
+                    }
+                }
+            },
+            computed : {
+                userIndex : function(){
+                    return this.filterIndex(this.userData);
+                }
+            },
+            methods : {
+                filterIndex : function(data){
+                    var result = [];
+                    for(var i = 0, len = data.length; i < len; i ++){
+                        if(data[i].index){
+                            result.push(data[i].index);
+                        }
+                    }
+                    return result;
+                },
+                setListIndexPos : function(){
+                    var iH = this.$refs.listIndex.offsetHeight;
+                    this.$refs.listIndex.style.marginTop = - iH / 2 + "px";
+                },
+                setScroll : function(e){
+                    var oP = this.$refs.listUser.getElementsByTagName("p");
+                    for(var i = 0, len = oP.length; i < len; i ++){
+                        if(oP[i].innerText === e.target.innerText){ 
+                            document.documentElement.scrollTop = oP[i].offsetTop;
+                        }
+                    }
+                },
+                showTele : function(tele){
+                    if(!this.bMove){
+                        busVM.$emit("userTele", tele);
+                    }else{
+                        this.bMove = false;
+                    }
+                }
+            },
+            mounted : function(){
+                this.setListIndexPos();
+            }
+        });
+        Vue.component("my-alert", {
+            template : `<div id="alert" ref="alert">
+                            <div class="alert_content">
+                                <div class="alert_title">{{ customTitle }}</div>
+                                <div class="alert_body">13500001234</div>
+                                <div class="alert_btn">
+                                    <slot name="cancel"></slot>
+                                    <slot name="confirm"></slot>
+                                </div>
+                            </div>
+                        </div>`,
+            props : {
+                "custom-title" : {
+                    type : String,
+                    default : "Message Box"
+                }
+            },
+            data(){
+                return {
+                    userTele : ''
+                }
+            },
+            mounted : function(){
+                busVM.$on("userTele", function(tele){
+                    this.userTele = tele;
+                    this.$refs.alert.style.display = "flex";
+                }.bind(this));
+            }
+        });
+        var vm = new Vue({
+           el : "#app",
+           data : {
+               userData : userData
+           },
+           methods : {
+               backBtn : function(){
+                   alert(1);
+               },
+               homeBtn : function(){
+                   alert(2);
+               },
+               cancelCall : function(){
+                //    alert(3);
+                   this.$children[2].$el.style.display = "none";
+               },
+               confirmCall : function(){
+                   alert(4);
+               }
+           } 
+        });
+    </script>
+</body>
+</html>
