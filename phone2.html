@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Phonebook</title>
+    <title>Phonebook2--Dynamical Alert-Component</title>
     <style>
         *{
             margin: 0;
@@ -67,7 +67,7 @@
             left: 0px;
             top: 0px;
             z-index: 20;
-            display: none;
+            display: flex;
         }
         #alert .alert_content{
             width: 240px;
@@ -107,13 +107,9 @@
             <button slot="right" @touchstart="homeBtn">Home</button>
         </my-header>
         <my-list :user-data="userData"></my-list>
-        <my-alert custom-title="Call">
-            <button slot="cancel" @touchstart="cancelCall">Cancel</button>
-            <button slot="confirm" @touchstart="confirmCall">Confirm</button>
-        </my-alert>
     </div>
     <script>
-        var busVM = new Vue();
+        // create an alert-module dynamically
         var userData = [
             {
                 "index" : "A",
@@ -307,7 +303,18 @@
                 },
                 showTele : function(tele){
                     if(!this.bMove){
-                        busVM.$emit("userTele", tele);
+                        myAlert({
+                            title : "Call",
+                            body : tele,
+                            cancel : function(){
+                                document.body.removeChild(
+                                    document.getElementById("alert")
+                                )
+                            },
+                            confirm : function(e){
+                                alert("Calling " + e.path[2].children[1].innerText);
+                            }
+                        });
                     }else{
                         this.bMove = false;
                     }
@@ -317,35 +324,42 @@
                 this.setListIndexPos();
             }
         });
-        Vue.component("my-alert", {
-            template : `<div id="alert" ref="alert">
+        var myAlert = (function(){
+            var defaults = {
+                title : "Message Box",
+                body : "Here's a telephone number",
+                cancel : null,
+                confirm : null
+            };
+            var alertComp = {
+                template : `<div id="alert">
                             <div class="alert_content">
                                 <div class="alert_title">{{ customTitle }}</div>
                                 <div class="alert_body">{{ userTele }}</div>
                                 <div class="alert_btn">
-                                    <slot name="cancel"></slot>
-                                    <slot name="confirm"></slot>
+                                    <button  v-if="cancel" @touchstart="cancel">Cancel</button>
+                                    <button  v-if="confirm" @touchstart="confirm">Confirm</button>
                                 </div>
                             </div>
                         </div>`,
-            props : {
-                "custom-title" : {
-                    type : String,
-                    default : "Message Box"
+            };
+            var myComponent = Vue.extend(alertComp);
+            return function(opts){
+                for(var attr in opts){
+                    defaults[attr] = opts[attr];
                 }
-            },
-            data(){
-                return {
-                    userTele : ''
-                }
-            },
-            mounted : function(){
-                busVM.$on("userTele", function(tele){
-                    this.userTele = tele;
-                    this.$refs.alert.style.display = "flex";
-                }.bind(this));
+                var vm = new myComponent({
+                    el : document.createElement("div"),
+                    data : {
+                        customTitle : defaults.title,
+                        userTele : defaults.body,
+                        cancel : defaults.cancel,
+                        confirm : defaults.confirm
+                    }
+                });
+                document.body.appendChild(vm.$el)
             }
-        });
+        })();
         var vm = new Vue({
            el : "#app",
            data : {
@@ -359,6 +373,7 @@
                    alert(2);
                },
                cancelCall : function(){
+                //    alert(3);
                    this.$children[2].$el.style.display = "none";
                },
                confirmCall : function(){
