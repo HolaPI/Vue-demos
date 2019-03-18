@@ -226,6 +226,10 @@
                     {
                         "name" : "w4",
                         "tele" : "13500000020"
+                    },
+                    {
+                        "name" : "w5",
+                        "tele" : "13500000021"
                     }
                 ]
             }
@@ -309,10 +313,13 @@
                             cancel : function(){
                                 document.body.removeChild(
                                     document.getElementById("alert")
-                                )
+                                );
                             },
                             confirm : function(e){
-                                alert("Calling " + e.path[2].children[1].innerText);
+                                alert("I am Calling " + e.path[2].children[1].innerText);
+                                document.body.removeChild(
+                                    document.getElementById("alert")
+                                );
                             }
                         });
                     }else{
@@ -371,13 +378,6 @@
                },
                homeBtn : function(){
                    alert(2);
-               },
-               cancelCall : function(){
-                //    alert(3);
-                   this.$children[2].$el.style.display = "none";
-               },
-               confirmCall : function(){
-                   alert("Calling......");
                }
            } 
         });
