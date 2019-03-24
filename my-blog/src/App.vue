@@ -3,7 +3,10 @@
     <!-- <show-blogs></show-blogs> -->
     <!-- <add-blog></add-blog> -->
     <blog-header></blog-header>
-    <router-view></router-view>
+    <!-- to keep cache -->
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     
   </div>
 </template>
