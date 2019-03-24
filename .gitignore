@@ -1,3 +1,4 @@
 # package dependencies
 my-blog/node_modules
 my-blog/code_source
+my-blog/dist
