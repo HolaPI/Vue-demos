@@ -4,9 +4,9 @@
     <!-- <add-blog></add-blog> -->
     <blog-header></blog-header>
     <!-- to keep cache -->
-    <keep-alive>
+    <!-- <keep-alive> -->
       <router-view></router-view>
-    </keep-alive>
+    <!-- </keep-alive> -->
     
   </div>
 </template>

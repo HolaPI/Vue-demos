@@ -3,7 +3,11 @@
         <div class="showDetails">
             <div>
                 <h3>{{ blog.title }}</h3>
-                <article>{{ blog.body }}</article>
+                <article>{{ blog.content }}</article>
+                <ul>
+                    <li v-for="(category, index) in blog.categories" :key="index">{{ category }}</li>
+                </ul>
+                <p>author: {{ blog.author }}</p>
             </div>
             
         </div>
@@ -21,9 +25,13 @@ export default {
         }
     },
     created: function(){
-        this.$http.get('https://jsonplaceholder.typicode.com/posts/' + this.id)
+        this.$http.get('https://myblog-666.firebaseio.com/posts/' + this.id + '.json')
                   .then(function(data){
-                      this.blog = data.body
+                      return data.json()
+                    //   this.blog = data.body
+                  })
+                  .then(function(data){
+                      this.blog = data
                   })
 
     }
