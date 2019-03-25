@@ -113,6 +113,20 @@ input[type=text] ~ button{
     width: 76px;
     text-transform: uppercase;
 }
+@media screen and (min-width: 360px){
+   input[type=text]{
+        width: calc(90% - 70px);
+        padding: 8px;
+        font-size: 16px;
+        margin-right: 12px;
+    }
+    input[type=text] ~ button{
+        height: 38px;
+        width: 70px;
+        text-align: center;
+        text-transform: uppercase;
+    } 
+}
 .single-blog{
     box-sizing: border-box;
     padding: 0px 10px 10px;
