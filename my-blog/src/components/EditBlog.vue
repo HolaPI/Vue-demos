@@ -38,10 +38,10 @@
                 </select>
             </p>
         </div>
-        <button @click.prevent="post">Add a Blog</button>       
+        <button @click.prevent="saveData">Save Edit</button>      
     </form>
     <div class="submitStatus" v-if="submitted">
-        Congras! Your blog has been post. The content is as below.
+        Great! Your blog has been saved. The new content is as below.
     </div>
     <div class="contentPreview" v-if="submitted">
         <h4>Content Preview</h4>
@@ -50,14 +50,16 @@
         <p>{{ blog.content }}</p>
         <p>Categories:</p>
         <ul>
-            <li v-for="(item, index) in blog.categories" :key="index">{{ item }}</li>
+            <li  v-for="(item, index) in blog.categories" :key="index">{{ item }}</li>
         </ul>
         <p>Author: {{ blog.author }}</p>
     </div>
     <div v-if="submitted"> 
         <router-link to="/add"><button @click="changeStatus">new Blog</button></router-link>
         <router-link to="/"><button>Blogs Plaza</button></router-link>
-    </div> 
+    </div>
+
+    
   </div>
 </template>
 
@@ -67,11 +69,12 @@ export default {
   name: 'add-blog',
   data: function(){
       return {
+          id: this.$route.params.id,
           blog : {
-              title : '',
-              content : '',
-              categories : [],
-              author : ''
+              title: '',
+              content: '',
+              categories: [],
+              author: ''
           },
           checkboxs : [
               "Vue.js",
@@ -100,19 +103,34 @@ export default {
       }
   },
   methods: {
-      post : function(){
-        //   this.$http.post("https://jsonplaceholder.typicode.com/posts", {
-        //   this.$http.post("https://myblog-666.firebaseio.com/posts.json", this.blog)
-          axios.post("/posts.json", this.blog)
-                    .then(data => {
-            //   console.log(data)
-            console.log(this.blog)
-              this.submitted = true
+      fetchData : function(){
+          axios.get("/posts/" + this.id + ".json")
+                    .then(res => {
+                        for(let key in res.data){
+                            this.blog[key] = res.data[key]
+                        }
+                        // DO NOT set 'this.blog = res.data', or unexpected bug occurs 
+                        // at checkboxs when their initial selection is blank
+                        // this.blog = res.data
+                    })
+      },
+      saveData : function(){
+          //confirm editting
+        if(confirm("Completed and save editting?")){
+            //  edit datium using put
+          axios.put("/posts/" + this.id + ".json", this.blog)
+               .then(() => {
+                    this.submitted = true
           })
+        }
       },
       changeStatus: function(){
           this.submitted = !this.submitted
       }
+  },
+//   auto-fill the blanks once this page has been created in order to reduce editting volume
+  created(){
+      this.fetchData()
   }
 }
 </script>
@@ -148,7 +166,8 @@ select{
     margin-top: 8px;
 }
 .checkboxs label input{
-    display: inline-block;  
+    display: inline-block;
+    
 }
 .checkboxs label{
     display: inline-block;
@@ -171,7 +190,7 @@ select{
 button{
     display: inline-block;
     padding: 8px;
-    margin: 8px 12px 8px 0;
+    margin: 8px 12px 8px 0px;
     background-color: #f40;
     color: #fff;
     font-size: 16px;
@@ -179,5 +198,4 @@ button{
     outline: none;
     cursor: pointer;
 }
-
 </style>

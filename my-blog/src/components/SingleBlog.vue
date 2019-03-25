@@ -11,11 +11,14 @@
             </div>
             
         </div>
-        <router-link to="/"><button>&lt;&lt;&nbsp;Back</button></router-link>
+        <router-link to="/"><button class="btn-group">&lt;&lt;&nbsp;Back</button></router-link>
+        <button @click="deleteBlog" class="btn-group">Delete</button>
+        <router-link :to="'/edit/' + id"><button class="btn-group">Edit</button></router-link>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'single-blog',
     data(){
@@ -25,15 +28,21 @@ export default {
         }
     },
     created: function(){
-        this.$http.get('https://myblog-666.firebaseio.com/posts/' + this.id + '.json')
-                  .then(function(data){
-                      return data.json()
+        axios.get('/posts/' + this.id + '.json')
+                  .then(data => {
+                      this.blog = data.data
                     //   this.blog = data.body
                   })
-                  .then(function(data){
-                      this.blog = data
-                  })
-
+    },
+    methods: {
+        deleteBlog: function(){
+            if(confirm('Sure to delete this blog?')){
+                axios.delete('/posts/' + this.id + '.json')
+                      .then(res => {
+                          this.$router.push({path: '/'})
+                      })
+            }
+        }
     }
 }
 </script>
@@ -60,8 +69,17 @@ export default {
         font-size: 20px;
         color: #f00;
     }
-    #single-blog .showDetails ~ a button{
-        margin-top: 10px;
+   .btn-group{
+        /* margin-top: 10px; */
+        display: inline-block;
+        padding: 8px;
+        margin: 10px 10px 0px 0px;
+        background-color: #f40;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
     }
 </style>
 

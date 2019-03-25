@@ -1,6 +1,6 @@
 <template>
     <div id="show-blogs" v-theme:column>
-        <h1>Blog View</h1>
+        <h1>Blog Plaza</h1>
         <input type="text" placeholder="search" ref="searchInput" @keyup.enter="searchContent">
         <button @click="searchContent">Search</button>
         <div v-for="blog in filterBlogs" class="single-blog" :key="blog.id">
@@ -13,7 +13,8 @@
 </template>
 
 <script>
-
+// axios local import
+import axios from 'axios'
 export default {
     name: 'show-blogs',
     data: function(){
@@ -22,26 +23,27 @@ export default {
             search: ''
         }
     },
-    
     created(){
-        this.$http.get('https://myblog-666.firebaseio.com/posts.json')
-                  .then(function(data){   
-                      return data.json() 
-                    // this.blogs = data.body.slice(0, 10)
-                  })
-                  .then(function(data){
-                      var blogsArr = []
-                      for(let key in data){
-                          data[key].id = key
-                          blogsArr.push(data[key])
-                      }
-                      this.blogs = blogsArr
-                  })
+        // this.$http.get('https://myblog-666.firebaseio.com/posts.json')
+        axios.get('/posts.json')
+            .then(obj => {
+                //use arrow function to solve 'this' pointer direction problem
+                let data = obj.data
+                let blogsArr = []
+                for(let key in data){
+                    data[key].id = key
+                    blogsArr.push(data[key])
+                }
+                this.blogs = blogsArr
+            })
     },
     computed: {
         filterBlogs: function(){
             return this.blogs.filter((blog) => {
-                return blog.title.match(this.search)
+                //ignore case-sensitive
+                let keyStr = this.search.toLowerCase()
+                return blog.title.toLowerCase().match(keyStr)
+                
             })
         }
     },
@@ -49,13 +51,21 @@ export default {
         searchContent: function(){
             this.search = this.$refs.searchInput.value
         }
+        // highLight: function(keyStr){
+        //     let oSpan = document.createElement('span')
+        //     oSpan.innerHTML = keyStr
+        //     oSpan.setAttribute('class', 'highlight-part')
+        //     console.log(oSpan)
+        // }
     },
     filters: {
         toUpperCase: function(value){
             return value.toUpperCase()
         },
         snippet: function(value){
-            return value.slice(0, 200) + "..."
+            // to trim value that is going to show in blog plaza
+            value = value.length < 180? value : value.slice(0, 180) + "..."
+            return value      
         }
     },
     directives: {

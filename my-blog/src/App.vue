@@ -1,13 +1,7 @@
 <template>
   <div id="app">
-    <!-- <show-blogs></show-blogs> -->
-    <!-- <add-blog></add-blog> -->
     <blog-header></blog-header>
-    <!-- to keep cache -->
-    <!-- <keep-alive> -->
-      <router-view></router-view>
-    <!-- </keep-alive> -->
-    
+    <router-view></router-view>
   </div>
 </template>
 
