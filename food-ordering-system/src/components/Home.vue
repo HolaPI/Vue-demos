@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <h1>Home</h1>
-    <button @click="goToURL" class="btn btn-success">Click and GO</button>
+  <div class="row">
+    <div class="col-sm-12 text-center" id="home">
+      <div class="bkground">
+        <h1>Welcome to taste our delicious Pizzas!</h1>
+        <h2>You are sure to find what you enjoy.</h2>
+        <button @click="goToURL" class="btn btn-success">Click & GO</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -20,4 +25,25 @@ export default {
   }
 };
 </script>
+<style scoped>
+#home {
+  background: url("../assets/pizza.jpg");
+  height: 85vh;
+  padding: 10%;
+}
+h1,
+h2 {
+  /* color: #25b99a; */
+  /* color: #e85656; */
+  margin: 6%;
+}
+#home .bkground {
+  width: 70vw;
+  padding: 20px 0;
+  margin: 0 auto;
+  background-color: #eee;
+  opacity: 0.8;
+}
+</style>
+
 
