@@ -10,12 +10,12 @@ Vue.config.productionTip = false
 // Vue.use(VueResource)
 Vue.use(VueRouter)
 // axios global configuration
-axios.defaults.baseURL = 'https://myblog-666.firebaseio.com'
-
+// axios.defaults.baseURL = 'https://myblog-666.firebaseio.com'
+axios.defaults.baseURL = 'https://wd1695319840sjftof.wilddogio.com'
 
 //create router object
 const router = new VueRouter({
-  routes : Routes,
+  routes: Routes,
   mode: 'history'
 })
 new Vue({
