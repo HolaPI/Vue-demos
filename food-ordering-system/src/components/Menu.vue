@@ -71,7 +71,9 @@ export default {
   data() {
     return {
       cart: [],
-      cartInfo: "Oops, your cart is empty!",
+      cartInfo: "Oops, your cart is empty!"
+      /*
+      // original data
       getMenuItems: {
         1: {
           name: "Durian Pizza",
@@ -116,9 +118,14 @@ export default {
           ]
         }
       }
+      */
     };
   },
   computed: {
+    getMenuItems() {
+      // return this.$store.state.menuItems;
+      return this.$store.getters.getMenuItems;
+    },
     totalFare() {
       let total = 0;
       for (let item in this.cart) {
@@ -128,7 +135,28 @@ export default {
       return total;
     }
   },
+  created() {
+    this.fetchMenuItem();
+  },
   methods: {
+    fetchMenuItem() {
+      //fetch method to get data from remote database
+      // fetch("https://wd1695319840sjftof.wilddogio.com/wenxw-menu.json")
+      //   .then(res => {
+      //     return res.json();
+      //   })
+      //   .then(data => {
+      //     this.getMenuItems = data;
+      //   });
+
+      //axios method to get data from remote database
+      this.http.get("/wenxw-menu.json").then(res => {
+        // this.getMenuItems = res.data;
+
+        // save res.data to vuex by invorking method getMenuItems of store
+        this.$store.commit("setMenuItems", res.data);
+      });
+    },
     addToCart(item, option) {
       let cartItem = {
         name: item.name,

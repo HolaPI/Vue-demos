@@ -29,6 +29,9 @@ export default {
   name: "app",
   components: {
     appHeader: Header
+  },
+  data() {
+    return {};
   }
 };
 </script>

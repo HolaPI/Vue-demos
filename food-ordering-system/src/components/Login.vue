@@ -29,6 +29,10 @@ export default {
       password: ""
     };
   },
+  //set module router guard
+  beforeRouteEnter(to, from, next) {
+    next(vm => vm.$store.dispatch("setUser", null));
+  },
   methods: {
     onSubmit() {
       axios.get("/wen-users.json").then(res => {
@@ -45,8 +49,10 @@ export default {
           return this.email === user.email && this.password === user.password;
         });
         if (result != null && result.length > 0) {
+          this.$store.dispatch("setUser", result[0].email);
           this.$router.push({ name: "homeLink" });
         } else {
+          this.$store.dispatch("setUser", null);
           alert("Your email or password is wrong.");
         }
         // console.log(result);

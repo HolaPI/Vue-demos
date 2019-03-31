@@ -1,0 +1,6 @@
+
+//get states of properties
+export const getMenuItems = state => state.menuItems
+export const currentUser = state => state.currentUser
+export const loginFlag = state => state.loginFlag
+

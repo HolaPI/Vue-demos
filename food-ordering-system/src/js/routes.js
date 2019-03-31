@@ -5,6 +5,7 @@ import Admin from '../components/Admin.vue'
 import About from '../components/about/About.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+import tempReload from '../components/tempReload.vue'
 //second-class routes
 import History from '../components/about/History.vue'
 import Contact from '../components/about/Contact.vue'
@@ -21,7 +22,8 @@ export const routes = [
             'history': History,
             'delivery': Delivery,
             'orderingGuide': OrderingGuide
-    } },
+        }
+    },
     { path: '/menu', name: 'menuLink', component: Menu },
     { path: '/admin', name: 'adminLink', component: Admin },
     {
@@ -39,5 +41,6 @@ export const routes = [
     },
     { path: '/login', name: 'loginLink', component: Login },
     { path: '/register', name: 'registerLink', component: Register },
+    { path: '/temp-reload', name: 'tempLink', component: tempReload },
     { path: '*', redirect: '/' }
 ]

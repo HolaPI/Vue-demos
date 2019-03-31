@@ -42,7 +42,7 @@ export default {
           password: this.password
           // repassword: this.repassword
         };
-        axios.post("/wen-users.json", formData).then(res => {
+        axios.post("/wen-users.json", formData).then(() => {
           this.$router.push({ name: "loginLink" });
           // console.log(res);
         });

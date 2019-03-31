@@ -42,10 +42,20 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li>
-          <router-link :to="{name: 'loginLink'}" class="nav-link">Login</router-link>
+          <router-link v-show="!loginFlag" :to="{name: 'loginLink'}" class="nav-link">Login</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'registerLink'}" class="nav-link">Register</router-link>
+          <router-link
+            v-show="loginFlag"
+            :to="{name: 'loginLink'}"
+            class="nav-link"
+          >{{ currentUser }}</router-link>
+        </li>
+        <li>
+          <router-link v-show="loginFlag" :to="{name: 'loginLink'}" class="nav-link">Log out</router-link>
+        </li>
+        <li>
+          <router-link v-show="!loginFlag" :to="{name: 'registerLink'}" class="nav-link">Register</router-link>
         </li>
       </ul>
     </nav>
@@ -56,10 +66,15 @@
 export default {
   name: "app-header",
   data() {
-    return {
-      //   homeLink: "/",
-      //   menuLink: "menu"
-    };
+    return {};
+  },
+  computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
+    loginFlag() {
+      return this.$store.getters.loginFlag;
+    }
   }
 };
 </script>

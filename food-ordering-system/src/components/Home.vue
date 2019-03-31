@@ -3,7 +3,7 @@
     <div class="col-sm-12 text-center" id="home">
       <div class="bkground">
         <h1>Welcome to taste our delicious Pizzas!</h1>
-        <h2>You are sure to find what you enjoy.</h2>
+        <h2>You are surely to find what you enjoy.</h2>
         <button @click="goToURL" class="btn btn-success">Click & GO</button>
       </div>
     </div>
