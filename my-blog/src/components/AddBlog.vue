@@ -102,8 +102,18 @@ export default {
     post: function() {
       //   this.$http.post("https://jsonplaceholder.typicode.com/posts", {
       //   this.$http.post("https://myblog-666.firebaseio.com/posts.json", this.blog)
+      if (this.blog.title === "") {
+        if (confirm("No Title. Default 'Blog Title'?")) {
+          this.blog.title = "Blog Title";
+        } else {
+          return;
+        }
+      }
+      // if (this.blog.content === "") {
+      //   this.blog.content = "No Content";
+      // }
       axios.post("/wenxw-posts.json", this.blog).then(data => {
-        //   console.log(data)
+        console.log(data);
         // console.log(this.blog);
         this.submitted = true;
       });
