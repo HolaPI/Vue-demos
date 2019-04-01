@@ -143,7 +143,7 @@ export default {
         next(false);
       }
     } else {
-      next(false);
+      next();
     }
   },
   created() {
