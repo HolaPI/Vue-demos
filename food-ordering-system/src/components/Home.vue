@@ -4,7 +4,7 @@
       <div class="bkground">
         <h1>Welcome to taste our delicious Pizzas!</h1>
         <h2>You are surely to find what you enjoy.</h2>
-        <button @click="goToURL" class="btn btn-success">Click & GO</button>
+        <button @click="goToURL" class="btn btn-success">Go for a Pizza</button>
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@ export default {
       // this.$router.replace({ name: "registerLink" });
       // go to appointed page with push-method
       // this.$router.push("admin");
-      // this.$router.push({ name: "adminLink" });
+      this.$router.push({ name: "menuLink" });
     }
   }
 };
