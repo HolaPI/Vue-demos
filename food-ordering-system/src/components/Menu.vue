@@ -137,7 +137,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (this.cart.length && this.cart.length > 0) {
-      if (confirm("Your cart is loaded with delicious pizza, sure to leave?")) {
+      if (confirm("Cart with delicious pizza, sure to leave?")) {
         next();
       } else {
         next(false);
