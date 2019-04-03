@@ -1,0 +1,17 @@
+<h1 class="text-center">Editing</h1>
+<div class="card card-body">
+    <h3>Course to Edit</h3>
+    <!-- ?_mothod="PUT" is a must -->
+    <form action="/idea/{{ course.id }}?_method=PUT" method="POST">
+        <input type="hidden" name="_method" value="PUT"> <!-- it's a must to use this -->
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ course.title }}">
+        </div>
+        <div class="form-group">
+            <label for="details">Details</label>
+            <textarea type="text" rows="5" class="form-control" name="details">{{ course.details }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary">Save Edition</button>
+    </form>
+</div>
