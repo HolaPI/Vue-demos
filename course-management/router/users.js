@@ -31,4 +31,28 @@ router.get('/user/login', (req, res) => {
 router.get('/user/register', (req, res) => {
     res.render('user/register')
 })
+router.post('/user/register', urlencodedParser, (req, res) => {
+    let errors = []
+    if (req.body.password !== req.body.repassword) {
+        errors.push({
+            text: 'password not paired'
+        })
+    }
+    if (req.body.password.length < 6) {
+        errors.push({
+            text: 'password is too short'
+        })
+    }
+    if (errors.length > 0) {
+        res.render('user/register', {
+            errors: errors,
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            repassword: req.body.repassword
+        })
+    } else {
+        res.send('congrds')
+    }
+})
 module.exports = router
