@@ -35,7 +35,7 @@ router.post('/user/register', urlencodedParser, (req, res) => {
     let errors = []
     if (req.body.password !== req.body.repassword) {
         errors.push({
-            text: 'password not paired'
+            text: 'password is not paired'
         })
     }
     if (req.body.password.length < 6) {
