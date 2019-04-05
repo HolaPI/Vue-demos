@@ -28,6 +28,10 @@ router.get('/new-course', (req, res) => {
 router.get('/user/login', (req, res) => {
     res.render('user/login')
 })
+router.post('/user/login', urlencodedParser, (req, res) => {
+    let errors = []
+
+})
 router.get('/user/register', (req, res) => {
     res.render('user/register')
 })
