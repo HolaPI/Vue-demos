@@ -9,6 +9,9 @@ const courseModel = new Schema({
         type: String,
         require: true
     },
+    user: {
+        type: String
+    },
     date: {
         type: Date,
         default: Date.now

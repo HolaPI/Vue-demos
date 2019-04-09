@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost/course-M', { useNewUrlParser: true })
 // })
 const idea = require('./router/idea')
 const users = require('./router/users')
-
+// const user = require('./router/users').user
 const app = express()
 //handlebars middleware
 app.engine('handlebars', exphbs({
@@ -44,10 +44,11 @@ app.use(flash())
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
+    res.locals.userV = users.userV || null
     next()
 })
 app.use('/idea', idea)
-app.use('/', users)
+app.use('/', users.router)
 app.use(express.static(path.join(__dirname, 'public')))
 
 const port = 8088

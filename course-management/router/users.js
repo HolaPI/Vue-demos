@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 
+// const passport = require('passport')
+const userV = []
 const router = express.Router()
 //import date-model
 require('../models/userModel')
@@ -21,14 +23,28 @@ router.get('/', (req, res) => {
         title: title
     })
 });
+
 router.get('/about', (req, res) => {
     res.render('about')
 });
 router.get('/new-course', (req, res) => {
-    res.render('discovery/newCourse')
+    // console.log(userV)
+    if (userV.length > 0) {
+        res.render('discovery/newCourse', {
+            userId: userV[0]
+        })
+    } else {
+        req.flash('error_msg', 'Login First')
+        res.redirect('/')
+    }
 })
 router.get('/user/login', (req, res) => {
     res.render('user/login')
+})
+router.get('/user/logout', (req, res) => {
+    //in order to clear userV array
+    userV.splice(0)
+    res.redirect('/')
 })
 router.post('/user/login', urlencodedParser, (req, res) => {
     userModel.findOne({ email: req.body.email }).then((user) => {
@@ -47,13 +63,15 @@ router.post('/user/login', urlencodedParser, (req, res) => {
                     })
                     return
                 } else {
+                    //push userName to userV in order to transit to index.js
+                    userV.push(user.id)
+                    // console.log(user.id)
                     req.flash('success_msg', 'Login Successfully!')
-                    res.redirect('/idea')
+                    res.redirect('/idea/' + user.id)
                 }
             })
         }
     })
-
 })
 router.get('/user/register', (req, res) => {
     res.render('user/register')
@@ -99,7 +117,7 @@ router.post('/user/register', urlencodedParser, (req, res) => {
                                 req.flash('success_msg', 'Registed Successfully!')
                                 res.redirect('/user/login')
                             }).catch(() => {
-                                req.flash('error_msg', 'Something Unexpected Happends.')
+                                req.flash('error_msg', 'Something Unexpected Occurs.')
                                 res.redirect('/user/register')
                             })
                         })
@@ -110,4 +128,11 @@ router.post('/user/register', urlencodedParser, (req, res) => {
 
     }
 })
-module.exports = router
+//redirect invalid route to homepage
+router.get('*', (req, res) => {
+    res.redirect('/')
+});
+module.exports = {
+    router,
+    userV
+}

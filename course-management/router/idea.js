@@ -10,9 +10,10 @@ const courseModel = mongoose.model('course')
 //bodyParser middlewaries
 let jsonParser = bodyParser.json()
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
-router.get('/', (req, res) => {
+router.get('/:userId', (req, res) => {
     //find all data in course-M db
-    courseModel.find({})
+    // console.log(req.params.userId)
+    courseModel.find({ user: req.params.userId })
         .sort({ date: 'desc' }) //sort data by descending
         .then(courses => {
             res.render('discovery/idea', {
@@ -21,8 +22,8 @@ router.get('/', (req, res) => {
         })
 
 })
-router.post('/', urlencodedParser, (req, res) => {
-    // console.log(req.body)
+router.post('/:userId', urlencodedParser, (req, res) => {
+    // console.log(req.params.userId)
     let err = []
     if (!req.body.title) {
         err.push({ text: "input title plz" })
@@ -40,11 +41,12 @@ router.post('/', urlencodedParser, (req, res) => {
         // res.render('idea')
         const newUser = {
             title: req.body.title,
-            details: req.body.details
+            details: req.body.details,
+            user: req.params.userId
         }
         new courseModel(newUser).save().then(() => {
             req.flash('success_msg', 'Great, new Course has been Added!')
-            res.redirect('/idea')
+            res.redirect('/idea/' + req.params.userId)
         })
     }
 });
@@ -52,10 +54,19 @@ router.get('/edit/:id', (req, res) => {
     courseModel.findOne({
         _id: req.params.id
     }).then(course => {
-        // console.log(course)
         res.render('discovery/edit', {
             course: course
         })
+        // console.log(course)
+        // if (course.id != req.params.id) {
+        //     res.flash('error_msg', 'Illegal Operation.')
+        //     res.redirect('/idea')
+        // } else {
+        //     res.render('discovery/edit', {
+        //         course: course
+        //     })
+        // }
+
     })
 
 })
@@ -66,18 +77,19 @@ router.put('/:id', urlencodedParser, (req, res) => {
         course.title = req.body.title,
             course.details = req.body.details
         course.save()
-    }).then(() => {
         req.flash('success_msg', 'Congrds, Edit Successfully!')
-        res.redirect('/idea')
+        res.redirect('/idea/' + course.user)
     })
 })
-router.delete('/:id', urlencodedParser, (req, res) => {
+//add two parameters :id/:name
+router.delete('/:id/:userId', urlencodedParser, (req, res) => {
+    // console.log(req.params)
     courseModel.deleteOne({
         _id: req.params.id
     })
         .then(() => {
             req.flash('success_msg', 'Datium Delted.')
-            res.redirect('/idea')
+            res.redirect('/idea/' + req.params.userId)
         })
 })
 
