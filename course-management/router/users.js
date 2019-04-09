@@ -2,8 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
+// const lang = require('../config/lang')
 
-// const passport = require('passport')
 const userV = []
 const router = express.Router()
 //import date-model
