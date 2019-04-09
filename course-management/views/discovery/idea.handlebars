@@ -3,7 +3,7 @@
 <div class="card card-body mb-2">
     <h3>{{ title }}</h3>
     <p>{{ details }}</p>
-    <a href="/idea/edit/{{ id }}" class="btn btn-dark btn-block">Edit</a>
+    <a href="/idea/edit/{{ id }}" class="btn btn-primary btn-block">Edit</a>
     <form action="/idea/{{ id }}/{{ user }}?_method=DELETE" method="POST">
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" class="btn btn-danger btn-block" value="Delete">

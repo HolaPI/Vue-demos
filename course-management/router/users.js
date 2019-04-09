@@ -17,7 +17,6 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //config router
 router.get('/', (req, res) => {
-    // res.send('Index')
     let title = 'Ich bin Awenn'
     res.render('index', {
         title: title
@@ -129,9 +128,9 @@ router.post('/user/register', urlencodedParser, (req, res) => {
     }
 })
 //redirect invalid route to homepage
-router.get('*', (req, res) => {
-    res.redirect('/')
-});
+// router.get('/*', (req, res) => {
+//     res.redirect('/')
+// });
 module.exports = {
     router,
     userV

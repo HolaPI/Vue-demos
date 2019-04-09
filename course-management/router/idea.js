@@ -57,18 +57,7 @@ router.get('/edit/:id', (req, res) => {
         res.render('discovery/edit', {
             course: course
         })
-        // console.log(course)
-        // if (course.id != req.params.id) {
-        //     res.flash('error_msg', 'Illegal Operation.')
-        //     res.redirect('/idea')
-        // } else {
-        //     res.render('discovery/edit', {
-        //         course: course
-        //     })
-        // }
-
     })
-
 })
 router.put('/:id', urlencodedParser, (req, res) => {
     courseModel.findOne({

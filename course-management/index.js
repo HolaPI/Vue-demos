@@ -50,7 +50,6 @@ app.use((req, res, next) => {
 app.use('/idea', idea)
 app.use('/', users.router)
 app.use(express.static(path.join(__dirname, 'public')))
-
 const port = 8088
 app.listen(port, () => {
     console.log(`Port ${port} is working.`)
