@@ -44,7 +44,7 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
     res.locals.userV = users.userV[0] || null
-    res.locals.userName = users.userV[1] || null
+    res.locals.userN = users.userV[1] || null
     // app.locals.lang = lang
     next()
 })

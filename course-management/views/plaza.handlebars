@@ -3,7 +3,8 @@
     {{#each coursesT}}
     <div class="col-md-4 col-sm-12 mb-3">
         <div class="card card-body">
-            <form action="/idea/{{ userV }}" method="POST">
+            <form action="/idea/{{ userV }}/{{ userN }}" method="POST">
+                <p class="text-right mb-0">{{ userName }}</p>
                 <h2>{{ title }}</h2>
                 <input type="hidden" name="title" value="{{ title }}">
                 <textarea rows="5" class="form-control mb-4" name="details">{{ details }}</textarea>

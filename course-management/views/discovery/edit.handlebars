@@ -2,7 +2,7 @@
 <div class="card card-body">
     <h3>Course to Edit</h3>
     <!-- ?_mothod="PUT" is a must -->
-    <form action="/idea/{{ course.id }}?_method=PUT" method="POST">
+    <form action="/idea/edit/{{ course.id }}?_method=PUT" method="POST">
         <input type="hidden" name="_method" value="PUT"> <!-- it's a must to use this -->
         <div class="form-group">
             <label for="title">Title</label>

@@ -29,12 +29,14 @@ router.get('/me', (req, res) => {
 });
 router.get('/plaza', (req, res) => {
     if (userV[0]) {
-        courseModel.find({ user: { $ne: userV[0] } })
+        courseModel.find({ userId: { $ne: userV[0] } })
             .sort({ date: 'desc' })
             .then((courses) => {
                 //add userV in each course
                 courses.forEach(course => {
+                    // console.log(course.date)
                     course.userV = userV[0]
+                    course.userN = userV[1]
                 })
                 res.render('plaza', {
                     coursesT: courses

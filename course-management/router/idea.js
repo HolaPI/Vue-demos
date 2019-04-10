@@ -18,7 +18,7 @@ router.get('/:userId', (req, res) => {
     //guide guard in case of input url with userId directly
     if (users.userV.length > 0) {
         //find logined-user data in course-M db
-        courseModel.find({ user: req.params.userId })
+        courseModel.find({ userId: req.params.userId })
             .sort({ date: 'desc' }) //sort data by descending
             .then(courses => {
                 //searched courses
@@ -35,7 +35,7 @@ router.get('/:userId', (req, res) => {
                 }
                 res.render('discovery/idea', {
                     courses: sCourses,
-                    user: req.params.userId
+                    userId: req.params.userId
                 })
                 //clear keywords after seaching
                 keyStr = ''
@@ -49,7 +49,7 @@ router.post('/filter/:userId', urlencodedParser, (req, res) => {
     keyStr = req.body.keywords
     res.redirect('/idea/' + req.params.userId)
 })
-router.post('/:userId', urlencodedParser, (req, res) => {
+router.post('/:userId/:userName', urlencodedParser, (req, res) => {
     //watch inputing errors
     let err = []
     if (!req.body.title) {
@@ -65,27 +65,32 @@ router.post('/:userId', urlencodedParser, (req, res) => {
             details: req.body.details
         })
     } else {
-        const newUser = {
+        const newCourse = {
             title: req.body.title,
             details: req.body.details,
-            user: req.params.userId
+            userId: req.params.userId,
+            userName: req.params.userName
         }
-        new courseModel(newUser).save().then(() => {
+        new courseModel(newCourse).save().then(() => {
             req.flash('success_msg', 'Great, new Course has been Added!')
             res.redirect('/idea/' + req.params.userId)
         })
     }
 });
 router.get('/edit/:courseId', (req, res) => {
-    courseModel.findOne({
-        _id: req.params.courseId
-    }).then(course => {
-        res.render('discovery/edit', {
-            course: course
+    if (users.userV.length > 0) {
+        courseModel.findOne({
+            _id: req.params.courseId
+        }).then(course => {
+            res.render('discovery/edit', {
+                course: course
+            })
         })
-    })
+    } else {
+        res.redirect('/')
+    }
 })
-router.put('/:courseId', urlencodedParser, (req, res) => {
+router.put('/edit/:courseId', urlencodedParser, (req, res) => {
     courseModel.findOne({
         _id: req.params.courseId
     }).then(course => {
@@ -93,17 +98,17 @@ router.put('/:courseId', urlencodedParser, (req, res) => {
             course.details = req.body.details
         course.save()
         req.flash('success_msg', 'Congrds, Edit Successfully!')
-        res.redirect('/idea/' + course.user)
+        res.redirect('/idea/' + course.userId)
     })
 })
 //add two parameters :id/:name
-router.delete('/:courseId/:userId', urlencodedParser, (req, res) => {
+router.delete('/delete/:courseId/:userId', urlencodedParser, (req, res) => {
     // console.log(req.params)
     courseModel.deleteOne({
         _id: req.params.courseId
     })
         .then(() => {
-            req.flash('success_msg', 'Datium Delted.')
+            req.flash('success_msg', 'Datium Deleted.')
             res.redirect('/idea/' + req.params.userId)
         })
 })

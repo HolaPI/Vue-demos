@@ -9,8 +9,13 @@ const courseModel = new Schema({
         type: String,
         require: true
     },
-    user: {
-        type: String
+    userId: {
+        type: String,
+        require: true
+    },
+    userName: {
+        type: String,
+        require: true
     },
     date: {
         type: Date,
