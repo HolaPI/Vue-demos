@@ -1,4 +1,10 @@
 <h3 class="text-center mb-4">Courses Plaza</h3>
+{{!-- {{#if userV}} --}}
+<form action="/plaza/filter/{{ userV }}" method="POST" class="row mx-auto mb-4">
+    <input type="text" class="col-md-11 form-control mb-2" name="keywords" placeholder="search the course">
+    <button type="submit" class="col-md-1 btn btn-warning mb-2">Search</button>
+</form>
+{{!-- {{/if}} --}}
 <div class="row">
     {{#each coursesT}}
     <div class="col-md-4 col-sm-12 mb-3">

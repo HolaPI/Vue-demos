@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 // const lang = require('../config/lang')
 
 const userV = []
+let keyStr = ''
 const router = express.Router()
 //import user date-model and course data-model
 require('../models/userModel')
@@ -50,8 +51,20 @@ router.get('/plaza', (req, res) => {
         })
     }
 })
-router.post('/plaza', urlencodedParser, (req, res) => {
-    console.log(req.body)
+//use middle-router to filte result via keywords from searching bar
+router.post('/filter/:userId', urlencodedParser, (req, res) => {
+    let userId = req.params.userId
+    console.log(userId)
+    if (userId) {
+        keyStr = req.body.keywords
+        console.log(keyStr)
+        res.redirect('/plaza/' + req.params.userId)
+    } else {
+        keyStr = req.body.keywords
+        console.log(keyStr)
+        res.redirect('/plaza')
+    }
+
 })
 router.get('/about', (req, res) => {
     res.render('about')
@@ -60,7 +73,8 @@ router.get('/new-course', (req, res) => {
     // console.log(userV)
     if (userV.length > 0) {
         res.render('discovery/newCourse', {
-            userId: userV[0]
+            userId: userV[0],
+            userName: userV[1]
         })
     } else {
         req.flash('error_msg', 'Login First')
