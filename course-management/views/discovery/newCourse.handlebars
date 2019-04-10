@@ -1,15 +1,15 @@
-<h1 class="text-center">{{ lang.sChinese._navibar.a }}</h1>
+<h1 class="text-center">Hola</h1>
 <div class="card card-body">
-    <h3>{{ lang.sChinese._navibar.b }}</h3>
+    <h3>Course to Learn</h3>
     <form action="/idea/{{ userId }}" method="POST">
         <div class="form-group">
-            <label for="title">{{ lang.sChinese._navibar.c }}</label>
+            <label for="title">Title</label>
             <input type="text" class="form-control" name="title" value="{{ title }}" required>
         </div>
         <div class="form-group">
-            <label for="details">{{ lang.sChinese._navibar.d }}</label>
+            <label for="details">Details</label>
             <textarea type="text" rows="5" class="form-control" name="details" required>{{ details }}</textarea>
         </div>
-        <button type="submit" class="btn btn-block btn-primary">{{ lang.sChinese._navibar.e }}</button>
+        <button type="submit" class="btn btn-block btn-primary">Submit</button>
     </form>
 </div>

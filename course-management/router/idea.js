@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const users = require('./users')
 
 const router = express.Router()
 //import data-model
@@ -11,24 +12,32 @@ const courseModel = mongoose.model('course')
 let jsonParser = bodyParser.json()
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 router.get('/:userId', (req, res) => {
-    //find logined-user data in course-M db
-    courseModel.find({ user: req.params.userId })
-        .sort({ date: 'desc' }) //sort data by descending
-        .then(courses => {
-            res.render('discovery/idea', {
-                courses: courses
+    //guide guard in case of input url with userId directly
+    if (users.userV.length > 0) {
+        //find logined-user data in course-M db
+        courseModel.find({ user: req.params.userId })
+            .sort({ date: 'desc' }) //sort data by descending
+            .then(courses => {
+                // let sCourses = courses.filter(course => {
+                //     return course.title.toLowerCase().match(keyStr.toLowerCase())
+                // })
+                res.render('discovery/idea', {
+                    courses: courses,
+                    // user: req.params.userId
+                })
             })
-        })
-
+    } else {
+        res.redirect('/')
+    }
 })
 router.post('/:userId', urlencodedParser, (req, res) => {
     //watch inputing errors
     let err = []
     if (!req.body.title) {
-        err.push({ text: "input title plz" })
+        err.push({ text: "Input Title." })
     }
     if (!req.body.details) {
-        err.push({ text: 'input details plz' })
+        err.push({ text: 'Input Details.' })
     }
     if (err.length > 0) {
         res.render('discovery/newCourse', {

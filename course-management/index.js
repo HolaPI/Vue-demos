@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
-const lang = require('./config/lang')
+// const lang = require('./config/lang')
 
 mongoose.connect('mongodb://localhost/course-M', { useNewUrlParser: true })
     //check connection status
@@ -42,8 +42,9 @@ app.use(flash())
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
-    res.locals.userV = users.userV || null
-    app.locals.lang = lang
+    res.locals.userV = users.userV[0] || null
+    res.locals.userN = users.userV[1] || null
+    // app.locals.lang = lang
     next()
 })
 app.use('/idea', idea)

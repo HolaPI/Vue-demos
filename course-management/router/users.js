@@ -64,7 +64,7 @@ router.post('/user/login', urlencodedParser, (req, res) => {
                 } else {
                     //push userName to userV in order to transit to index.js
                     userV.push(user.id)
-                    // console.log(user.id)
+                    userV.push(user.userName)
                     req.flash('success_msg', 'Login Successfully!')
                     res.redirect('/idea/' + user.id)
                 }
