@@ -11,6 +11,9 @@ const courseModel = mongoose.model('course')
 //bodyParser middlewaries to parse data from form-requesting
 let jsonParser = bodyParser.json()
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+//define seaching keywords varible
+let keyStr = ''
 router.get('/:userId', (req, res) => {
     //guide guard in case of input url with userId directly
     if (users.userV.length > 0) {
@@ -18,17 +21,32 @@ router.get('/:userId', (req, res) => {
         courseModel.find({ user: req.params.userId })
             .sort({ date: 'desc' }) //sort data by descending
             .then(courses => {
-                // let sCourses = courses.filter(course => {
-                //     return course.title.toLowerCase().match(keyStr.toLowerCase())
-                // })
+                let sCourses = null
+                if (keyStr) {
+                    let key = keyStr.toLowerCase()
+                    sCourses = courses.filter(course => {
+                        //filte data from title or details
+                        return course.title.toLowerCase().match(key) ||
+                            course.details.toLowerCase().match(key)
+                    })
+                } else {
+                    sCourses = courses
+                }
                 res.render('discovery/idea', {
-                    courses: courses,
-                    // user: req.params.userId
+                    courses: sCourses,
+                    user: req.params.userId
                 })
+                //clear keywords after seaching
+                keyStr = ''
             })
     } else {
         res.redirect('/')
     }
+})
+//filte result via keywords from searching bar
+router.post('/filter/:userId', urlencodedParser, (req, res) => {
+    keyStr = req.body.keywords
+    res.redirect('/idea/' + req.params.userId)
 })
 router.post('/:userId', urlencodedParser, (req, res) => {
     //watch inputing errors
