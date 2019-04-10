@@ -1,0 +1,19 @@
+<h3 class="text-center mb-4">Courses Plaza</h3>
+<div class="row">
+    {{#each coursesT}}
+    <div class="col-md-4 col-sm-12 mb-3">
+        <div class="card card-body">
+            <form action="/idea/{{ userV }}" method="POST">
+                <h2>{{ title }}</h2>
+                <input type="hidden" name="title" value="{{ title }}">
+                <textarea rows="5" class="form-control mb-4" name="details">{{ details }}</textarea>
+                {{#if userV }}
+                <button class="btn btn-outline-primary btn-block">Add</button>
+                {{else}}
+                <a href="/user/login" class="btn btn-outline-primary btn-block">Login and Add</a>
+                {{/if}}
+            </form>
+        </div>
+    </div>
+    {{/each}}
+</div>

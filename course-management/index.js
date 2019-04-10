@@ -8,6 +8,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 // const lang = require('./config/lang')
 
+//remote mongo_database: mongodb+srv://root:root@cluster0-g1e1r.azure.mongodb.net/test?retryWrites=true
 mongoose.connect('mongodb://localhost/course-M', { useNewUrlParser: true })
     //check connection status
     .then(() => {
@@ -43,10 +44,12 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
     res.locals.userV = users.userV[0] || null
-    res.locals.userN = users.userV[1] || null
+    res.locals.userName = users.userV[1] || null
     // app.locals.lang = lang
     next()
 })
+
+//use idea and router middleware
 app.use('/idea', idea)
 app.use('/', users.router)
 //config public-directory as a static file

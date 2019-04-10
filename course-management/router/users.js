@@ -6,10 +6,12 @@ const bcrypt = require('bcrypt')
 
 const userV = []
 const router = express.Router()
-//import date-model
+//import user date-model and course data-model
 require('../models/userModel')
+require('../models/courseModel')
 //instantiation, it can be used to achieve 'add, delete, update, find'
 const userModel = mongoose.model('user')
+const courseModel = mongoose.model('course')
 
 //bodyParser middlewaries
 let jsonParser = bodyParser.json()
@@ -22,7 +24,29 @@ router.get('/', (req, res) => {
         title: title
     })
 });
-
+router.get('/me', (req, res) => {
+    res.render('me')
+});
+router.get('/plaza', (req, res) => {
+    if (userV[0]) {
+        courseModel.find({ user: { $ne: userV[0] } })
+            .sort({ date: 'desc' })
+            .then((courses) => {
+                res.render('plaza', {
+                    coursesT: courses
+                })
+            })
+    } else {
+        courseModel.find().then(courses => {
+            res.render('plaza', {
+                coursesT: courses
+            })
+        })
+    }
+})
+router.post('/plaza', urlencodedParser, (req, res) => {
+    console.log(req.body)
+})
 router.get('/about', (req, res) => {
     res.render('about')
 });
@@ -62,7 +86,7 @@ router.post('/user/login', urlencodedParser, (req, res) => {
                     })
                     return
                 } else {
-                    //push userName to userV in order to transit to index.js
+                    //push userId and userName to userV in order to transit to index.js
                     userV.push(user.id)
                     userV.push(user.userName)
                     req.flash('success_msg', 'Login Successfully!')

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const users = require('./users')
 
 const router = express.Router()
-//import data-model
+//import course data-model
 require('../models/courseModel')
 //instantiation, it can be used to achieve 'add, delete, update, find'
 const courseModel = mongoose.model('course')
@@ -12,7 +12,7 @@ const courseModel = mongoose.model('course')
 let jsonParser = bodyParser.json()
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-//define seaching keywords varible
+//define the seaching keywords varible
 let keyStr = ''
 router.get('/:userId', (req, res) => {
     //guide guard in case of input url with userId directly
@@ -21,6 +21,7 @@ router.get('/:userId', (req, res) => {
         courseModel.find({ user: req.params.userId })
             .sort({ date: 'desc' }) //sort data by descending
             .then(courses => {
+                //searched courses
                 let sCourses = null
                 if (keyStr) {
                     let key = keyStr.toLowerCase()
@@ -43,7 +44,7 @@ router.get('/:userId', (req, res) => {
         res.redirect('/')
     }
 })
-//filte result via keywords from searching bar
+//use middle-router to filte result via keywords from searching bar
 router.post('/filter/:userId', urlencodedParser, (req, res) => {
     keyStr = req.body.keywords
     res.redirect('/idea/' + req.params.userId)
