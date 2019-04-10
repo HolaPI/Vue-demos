@@ -32,6 +32,10 @@ router.get('/plaza', (req, res) => {
         courseModel.find({ user: { $ne: userV[0] } })
             .sort({ date: 'desc' })
             .then((courses) => {
+                //add userV in each course
+                courses.forEach(course => {
+                    course.userV = userV[0]
+                })
                 res.render('plaza', {
                     coursesT: courses
                 })
