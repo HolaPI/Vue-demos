@@ -8,6 +8,7 @@ const svgCaptcha = require('svg-captcha')
 const userV = []
 let keyStr = ''
 const router = express.Router()
+
 //import user date-model and course data-model
 require('../models/userModel')
 require('../models/courseModel')
@@ -224,15 +225,26 @@ router.put('/user/modify/:userId', urlencodedParser, (req, res) => {
     }
 })
 router.get('/captcha', (req, res) => {
-    let captcha = svgCaptcha.create()
-    // let captchaM = svgCaptcha.createMathExpr()
-    // console.log(captchaM)
+    // svgCaptcha.height = 30
+    let captcha = svgCaptcha.create({
+        size: 4, //the length of vcode
+        ignoreChars: '0oli1',
+        color: true,
+        noise: 2 //the amount of disturbing curves
+    })
+    let captchaM = svgCaptcha.createMathExpr({
+        noise: 2,
+        color: true
+    })
+    // console.log(captcha.text)
+    //captcha.text is case-sensitive
     req.session.captcha = captcha.text
     res.type('svg')
     res.status(200).send(captcha.data)
     // res.status(200).send(captchaM.data)
 
 })
+// console.log(req.session.captcha)
 //redirect invalid route to homepage
 // router.get('/*', (req, res) => {
 //     res.redirect('/')

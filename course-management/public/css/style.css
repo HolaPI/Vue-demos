@@ -6,12 +6,15 @@ body{
     color: #ffc107;
 }
 img.logo{
-    width: 100px;
+    width: 80px;
     margin: 0 auto;
 }
-
-
-
+div.vcode-wrap input{
+    margin: 0 15px;
+}
+img.captcha-vcode{
+    height: 38px;
+}
 img.img-avatar{
     width: 40px
 }
