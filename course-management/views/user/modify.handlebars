@@ -2,16 +2,18 @@
     <div class="col-md-6 mx-auto">
         <div class="card card-body">
             <img src="/img/logo.png" alt="" class="logo">
-            <h3 class="text-center">Register</h3>
-            <form action="/user/register" method="POST">
+            <h3 class="text-center">Modification</h3>
+            <p class="text-center">{{email}}</p>
+            <form action="/user/modify/{{ userV }}?_method=PUT" method="POST">
+                <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="name">User Name</label>
                     <input type="text" class="form-control" name="name" value="{{ name }}" required>
                 </div>
-                <div class="form-group">
+                {{!-- <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" name="email" value="{{ email }}" required>
-                </div>
+                    <input type="email" class="form-control" name="email" value="{{ email }}" disabled>
+                </div> --}}
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" name="password" value="{{ password }}" required>
@@ -20,12 +22,7 @@
                     <label for="repassword">Repassword</label>
                     <input type="password" class="form-control" name="repassword" value="{{ repassword }}" required>
                 </div>
-                <div class="form-group">
-                    <label for="vcode">Verify Code</label>
-                    <input type="text" class="form-control" name='vcode'>
-                    <a href="/captcha" class="btn"><img src="/captcha" alt="vcode"></a>
-                </div>
-                <button class="btn btn-block btn-primary">Register</button>
+                <button class="btn btn-block btn-primary">Save Modification</button>
             </form>
         </div>
     </div>

@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
     <div class="container">
         {{#if userN }}
+        <a class="mr-1" href="/me"><img src="/img/logo.png" alt="avatar_{{ userN }}" class="img-avatar"></a>
         <a class="navbar-brand" href="/me">{{ userN }}</a>
         {{else}}
         <a class="navbar-brand" href="/">Dobrey</a>
@@ -21,6 +22,8 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="/idea/{{ userV }}">My Courses</a>
                         <a class="dropdown-item" href="/new-course">New Course</a>
+                        <hr class="mt-0 mb-0">
+                        <a class="dropdown-item" href="/user/modify/{{ userV }}">Account Setting</a>
                     </div>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>

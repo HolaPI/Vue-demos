@@ -1,10 +1,12 @@
 {{#if success_msg}}
 <div class="alert alert-success">
+    <button class="close" data-dismiss="alert">&times;</button>
     {{ success_msg }}
 </div>
 {{/if}}
 {{#if error_msg}}
 <div class="alert alert-danger">
+    <button class="close" data-dismiss="alert">&times;</button>
     {{ error_msg }}
 </div>
 {{/if}}

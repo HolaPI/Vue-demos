@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
+const svgCaptcha = require('svg-captcha')
 // const lang = require('../config/lang')
 
 const userV = []
@@ -65,19 +66,9 @@ router.get('/plaza', (req, res) => {
     }
 })
 //use middle-router to filte result via keywords from searching bar
-//filter/:userId? enables both /filetr and /filter/:userId have access to the destination
-router.post('/plaza/filter/:userId?', urlencodedParser, (req, res) => {
-    console.log(req.path)
-    let userId = req.params.userId
-    console.log(userId)
-    if (userId) {
-        keyStr = req.body.keywords.toLowerCase()
-        res.redirect('/plaza')
-    } else {
-        keyStr = req.body.keywords.toLowerCase()
-        res.redirect('/plaza')
-    }
-
+router.post('/plaza/filter', urlencodedParser, (req, res) => {
+    keyStr = req.body.keywords.toLowerCase()
+    res.redirect('/plaza')
 })
 router.get('/about', (req, res) => {
     res.render('about')
@@ -121,7 +112,6 @@ router.post('/user/login', urlencodedParser, (req, res) => {
                     //push userId and userName to userV in order to transit to index.js
                     userV.push(user.id)
                     userV.push(user.userName)
-                    req.flash('success_msg', 'Login Successfully!')
                     res.redirect('/idea/' + user.id)
                 }
             })
@@ -135,12 +125,12 @@ router.post('/user/register', urlencodedParser, (req, res) => {
     let errors = []
     if (req.body.password !== req.body.repassword) {
         errors.push({
-            text: 'Password is not paired'
+            text: 'Password Not Paired!'
         })
     }
     if (req.body.password.length < 6) {
         errors.push({
-            text: 'Password is too short'
+            text: 'Password Too Short!'
         })
     }
     if (errors.length > 0) {
@@ -182,6 +172,66 @@ router.post('/user/register', urlencodedParser, (req, res) => {
             })
 
     }
+})
+router.get('/user/modify/:userId', (req, res) => {
+    if (userV[0]) {
+        userModel.findOne({ _id: req.params.userId }).then(user => {
+            res.render('user/modify', {
+                name: user.userName,
+                email: user.email
+            })
+        })
+    } else {
+        req.flash('error_msg', 'Login First')
+        res.redirect('/')
+    }
+})
+router.put('/user/modify/:userId', urlencodedParser, (req, res) => {
+    let errors = []
+    if (req.body.password !== req.body.repassword) {
+        errors.push({
+            text: 'Password Not Paired!'
+        })
+    }
+    if (req.body.password.length < 6) {
+        errors.push({
+            text: 'Password Too Short!'
+        })
+    }
+    if (errors.length > 0) {
+        res.render('user/modify', {
+            errors: errors,
+            name: req.body.name
+        })
+    } else {
+        userModel.findOne({ _id: req.params.userId }).then(user => {
+            user.userName = req.body.name
+            user.password = req.body.password
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(user.password, salt, (err, hash) => {
+                    if (err) throw err
+                    user.password = hash
+                    user.save().then(() => {
+                        req.flash('success_msg', 'Modified Successfully!')
+                        res.redirect('/user/login')
+                    }).catch(() => {
+                        req.flash('error_msg', 'Something Expected Occurs, Try Again.')
+                        res.redirect('/user/modify')
+                    })
+                })
+            })
+        })
+    }
+})
+router.get('/captcha', (req, res) => {
+    let captcha = svgCaptcha.create()
+    // let captchaM = svgCaptcha.createMathExpr()
+    // console.log(captchaM)
+    req.session.captcha = captcha.text
+    res.type('svg')
+    res.status(200).send(captcha.data)
+    // res.status(200).send(captchaM.data)
+
 })
 //redirect invalid route to homepage
 // router.get('/*', (req, res) => {
