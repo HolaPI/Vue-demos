@@ -24,11 +24,10 @@ router.get('/:userId', (req, res) => {
                 //searched courses
                 let sCourses = null
                 if (keyStr) {
-                    let key = keyStr.toLowerCase()
                     sCourses = courses.filter(course => {
                         //filte data from title or details
-                        return course.title.toLowerCase().match(key) ||
-                            course.details.toLowerCase().match(key)
+                        return course.title.toLowerCase().match(keyStr) ||
+                            course.details.toLowerCase().match(keyStr)
                     })
                 } else {
                     sCourses = courses
@@ -46,7 +45,7 @@ router.get('/:userId', (req, res) => {
 })
 //use middle-router to filte result via keywords from searching bar
 router.post('/filter/:userId', urlencodedParser, (req, res) => {
-    keyStr = req.body.keywords
+    keyStr = req.body.keywords.toLowerCase()
     res.redirect('/idea/' + req.params.userId)
 })
 router.post('/:userId/:userName', urlencodedParser, (req, res) => {

@@ -29,7 +29,7 @@ router.get('/me', (req, res) => {
     res.render('me')
 });
 router.get('/plaza', (req, res) => {
-    if (userV[0]) {
+    if (userV[0]) { //when customer has logined in
         courseModel.find({ userId: { $ne: userV[0] } })
             .sort({ date: 'desc' })
             .then((courses) => {
@@ -39,29 +39,42 @@ router.get('/plaza', (req, res) => {
                     course.userV = userV[0]
                     course.userN = userV[1]
                 })
-                res.render('plaza', {
-                    coursesT: courses
+                let sCourses = courses.filter(course => {
+                    //triple stuff enlarge the seaching range and either mathched is OK
+                    return course.title.toLowerCase().match(keyStr) ||
+                        course.details.toLowerCase().match(keyStr) ||
+                        course.userName.toLowerCase().match(keyStr)
                 })
+                res.render('plaza', {
+                    coursesT: sCourses
+                })
+                keyStr = ''
             })
-    } else {
+    } else { //when customer is wandering
         courseModel.find().then(courses => {
-            res.render('plaza', {
-                coursesT: courses
+            let sCourses = courses.filter(course => {
+                return course.title.toLowerCase().match(keyStr) ||
+                    course.details.toLowerCase().match(keyStr) ||
+                    course.userName.toLowerCase().match(keyStr)
             })
+            res.render('plaza', {
+                coursesT: sCourses
+            })
+            keyStr = ''
         })
     }
 })
 //use middle-router to filte result via keywords from searching bar
-router.post('/filter/:userId', urlencodedParser, (req, res) => {
+//filter/:userId? enables both /filetr and /filter/:userId have access to the destination
+router.post('/plaza/filter/:userId?', urlencodedParser, (req, res) => {
+    console.log(req.path)
     let userId = req.params.userId
     console.log(userId)
     if (userId) {
-        keyStr = req.body.keywords
-        console.log(keyStr)
-        res.redirect('/plaza/' + req.params.userId)
+        keyStr = req.body.keywords.toLowerCase()
+        res.redirect('/plaza')
     } else {
-        keyStr = req.body.keywords
-        console.log(keyStr)
+        keyStr = req.body.keywords.toLowerCase()
         res.redirect('/plaza')
     }
 
@@ -70,7 +83,6 @@ router.get('/about', (req, res) => {
     res.render('about')
 });
 router.get('/new-course', (req, res) => {
-    // console.log(userV)
     if (userV.length > 0) {
         res.render('discovery/newCourse', {
             userId: userV[0],
