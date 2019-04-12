@@ -22,6 +22,15 @@
                     <label for="repassword">Repassword</label>
                     <input type="password" class="form-control" name="repassword" value="{{ repassword }}" required>
                 </div>
+                <div class="form-group">
+                    <label for="vcode">Verify Code</label>
+                    <div class="vcode-wrap row">
+                        <input type="text" class="form-control col-md-7" name='vcode'>
+                        {{!-- refresh vcode-image by clicking with a random parameter --}}
+                        <img src="/captcha" alt="vcode" title="Click for New" class="captcha-vcode col-md-4"
+                            onclick="this.src='/captcha?rand=' + Math.random()">
+                    </div>
+                </div>
                 <button class="btn btn-block btn-primary">Save Modification</button>
             </form>
         </div>

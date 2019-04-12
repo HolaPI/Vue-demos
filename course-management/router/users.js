@@ -7,6 +7,7 @@ const svgCaptcha = require('svg-captcha')
 
 const userV = []
 let keyStr = ''
+let vcode = ''
 const router = express.Router()
 
 //import user date-model and course data-model
@@ -134,6 +135,11 @@ router.post('/user/register', urlencodedParser, (req, res) => {
             text: 'Password Too Short!'
         })
     }
+    if (req.body.vcode.toLowerCase() !== vcode) {
+        errors.push({
+            text: 'Verify Code Uncorrect!'
+        })
+    }
     if (errors.length > 0) {
         res.render('user/register', {
             errors: errors,
@@ -199,6 +205,11 @@ router.put('/user/modify/:userId', urlencodedParser, (req, res) => {
             text: 'Password Too Short!'
         })
     }
+    if (req.body.vcode.toLowerCase() !== vcode) {
+        errors.push({
+            text: 'Verify Code Uncorrect!'
+        })
+    }
     if (errors.length > 0) {
         res.render('user/modify', {
             errors: errors,
@@ -225,26 +236,32 @@ router.put('/user/modify/:userId', urlencodedParser, (req, res) => {
     }
 })
 router.get('/captcha', (req, res) => {
-    // svgCaptcha.height = 30
-    let captcha = svgCaptcha.create({
-        size: 4, //the length of vcode
-        ignoreChars: '0oli1',
-        color: true,
-        noise: 2 //the amount of disturbing curves
-    })
-    let captchaM = svgCaptcha.createMathExpr({
-        noise: 2,
-        color: true
-    })
-    // console.log(captcha.text)
+    let captcha = null
+    if (Math.random() - 0.5 > 0) {
+        //random length of vcode
+        let length = [3, 4, 5].sort(() => {
+            return Math.random().toFixed(1) - 0.5
+        }).slice(0, 1)
+        //create a string
+        captcha = svgCaptcha.create({
+            size: length, //the length of vcode
+            ignoreChars: '0Ooli1',
+            noise: 2 //the amount of disturbing curves
+        })
+    } else {
+        //create a math expression
+        captcha = svgCaptcha.createMathExpr({
+            noise: 2
+        })
+    }
     //captcha.text is case-sensitive
-    req.session.captcha = captcha.text
+    req.session.captcha = captcha.text.toLowerCase()
     res.type('svg')
     res.status(200).send(captcha.data)
-    // res.status(200).send(captchaM.data)
-
+    //save vcode-text for verifying
+    vcode = req.session.captcha
 })
-// console.log(req.session.captcha)
+
 //redirect invalid route to homepage
 // router.get('/*', (req, res) => {
 //     res.redirect('/')
