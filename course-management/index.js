@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost/course-M', { useNewUrlParser: true })
     })
 const idea = require('./router/idea')
 const users = require('./router/users')
+const me = require('./router/me')
 const app = express()
 //handlebars middleware
 app.engine('handlebars', exphbs({
@@ -52,6 +53,7 @@ app.use((req, res, next) => {
 //use idea and router middleware
 app.use('/idea', idea)
 app.use('/', users.router)
+app.use('/me', me)
 //config public-directory as a static file
 app.use(express.static(path.join(__dirname, 'public')))
 const port = 8088

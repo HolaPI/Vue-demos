@@ -7,7 +7,8 @@ const svgCaptcha = require('svg-captcha')
 
 const userV = []
 let keyStr = ''
-let vcode = ''
+//to pass vcode to other page, it should be an array instead of a primitive value
+let vcode = []
 const router = express.Router()
 
 //import user date-model and course data-model
@@ -28,9 +29,7 @@ router.get('/', (req, res) => {
         title: title
     })
 });
-router.get('/me', (req, res) => {
-    res.render('me')
-});
+
 router.get('/plaza', (req, res) => {
     if (userV[0]) { //when customer has logined in
         courseModel.find({ userId: { $ne: userV[0] } })
@@ -124,6 +123,7 @@ router.get('/user/register', (req, res) => {
     res.render('user/register')
 })
 router.post('/user/register', urlencodedParser, (req, res) => {
+
     let errors = []
     if (req.body.password !== req.body.repassword) {
         errors.push({
@@ -135,7 +135,7 @@ router.post('/user/register', urlencodedParser, (req, res) => {
             text: 'Password Too Short!'
         })
     }
-    if (req.body.vcode.toLowerCase() !== vcode) {
+    if (req.body.vcode.toLowerCase() !== vcode[0]) {
         errors.push({
             text: 'Verify Code Uncorrect!'
         })
@@ -161,7 +161,7 @@ router.post('/user/register', urlencodedParser, (req, res) => {
                         password: req.body.password
                     })
                     bcrypt.genSalt(10, (err, salt) => {
-                        // if (err) throw err
+                        if (err) throw err
                         bcrypt.hash(newUser.password, salt, (err, hash) => {
                             if (err) throw err
                             newUser.password = hash
@@ -174,69 +174,15 @@ router.post('/user/register', urlencodedParser, (req, res) => {
                             })
                         })
                     })
-
                 }
             })
+    }
+})
 
-    }
-})
-router.get('/user/modify/:userId', (req, res) => {
-    if (userV[0]) {
-        userModel.findOne({ _id: req.params.userId }).then(user => {
-            res.render('user/modify', {
-                name: user.userName,
-                email: user.email
-            })
-        })
-    } else {
-        req.flash('error_msg', 'Login First')
-        res.redirect('/')
-    }
-})
-router.put('/user/modify/:userId', urlencodedParser, (req, res) => {
-    let errors = []
-    if (req.body.password !== req.body.repassword) {
-        errors.push({
-            text: 'Password Not Paired!'
-        })
-    }
-    if (req.body.password.length < 6) {
-        errors.push({
-            text: 'Password Too Short!'
-        })
-    }
-    if (req.body.vcode.toLowerCase() !== vcode) {
-        errors.push({
-            text: 'Verify Code Uncorrect!'
-        })
-    }
-    if (errors.length > 0) {
-        res.render('user/modify', {
-            errors: errors,
-            name: req.body.name
-        })
-    } else {
-        userModel.findOne({ _id: req.params.userId }).then(user => {
-            user.userName = req.body.name
-            user.password = req.body.password
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(user.password, salt, (err, hash) => {
-                    if (err) throw err
-                    user.password = hash
-                    user.save().then(() => {
-                        req.flash('success_msg', 'Modified Successfully!')
-                        res.redirect('/user/login')
-                    }).catch(() => {
-                        req.flash('error_msg', 'Something Expected Occurs, Try Again.')
-                        res.redirect('/user/modify')
-                    })
-                })
-            })
-        })
-    }
-})
+
 router.get('/captcha', (req, res) => {
     let captcha = null
+    vcode.splice(0)
     if (Math.random() - 0.5 > 0) {
         //random length of vcode
         let length = [3, 4, 5].sort(() => {
@@ -245,7 +191,7 @@ router.get('/captcha', (req, res) => {
         //create a string
         captcha = svgCaptcha.create({
             size: length, //the length of vcode
-            ignoreChars: '0Ooli1',
+            ignoreChars: '0Ool1',
             noise: 2 //the amount of disturbing curves
         })
     } else {
@@ -259,7 +205,7 @@ router.get('/captcha', (req, res) => {
     res.type('svg')
     res.status(200).send(captcha.data)
     //save vcode-text for verifying
-    vcode = req.session.captcha
+    vcode.push(req.session.captcha)
 })
 
 //redirect invalid route to homepage
@@ -268,5 +214,6 @@ router.get('/captcha', (req, res) => {
 // });
 module.exports = {
     router,
-    userV
+    userV,
+    vcode
 }
