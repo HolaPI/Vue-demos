@@ -1,5 +1,6 @@
 <template>
-  <div class="row">
+  <div class="container">
+    <div class="row">
     <div class="col-sm-12 text-center" id="home">
       <div class="bkground">
         <h1>Welcome to taste our delicious Pizzas!</h1>
@@ -7,6 +8,7 @@
         <button @click="goToURL" class="btn btn-success">Go for a Pizza</button>
       </div>
     </div>
+  </div>
   </div>
 </template>
 <script>
