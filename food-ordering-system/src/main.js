@@ -26,24 +26,24 @@ const router = new VueRouter({
     }
   }
 })
-/*
-global defender
-router.beforeEach((to, from, next) => {
-  // console.log(to)
-  // console.log(from)
-  // console.log(next);
-  if (to.path == '/login' || to.path == '/register') {
-    next();
-  } else {
-    alert('Sorry, but you should log in first.');
-    next('/login');
-  }
-})
-rear hooker
-router.afterEach((to, from) => {
-  alert('rear hooker used')
-})
-*/
+
+// global defender
+// router.beforeEach((to, from, next) => {
+//   // console.log(to)
+//   // console.log(from)
+//   // console.log(next);
+//   if (to.path == '/login' || to.path == '/register') {
+//     next();
+//   } else {
+//     alert('Sorry, but you should log in first.');
+//     next('/login');
+//   }
+// })
+// rear hooker
+// router.afterEach((to, from) => {
+//   alert('rear hooker used')
+// })
+
 new Vue({
   router,
   store,

@@ -88,21 +88,22 @@ export default {
         this.$store.commit("setMenuItems", menuArr);
       });
   }
-  // beforeRouteEnter: (to, from, next) => {
-  //   // alert("hola, " + this.name);
-  //   // next();
-  //   next(vm => {
-  //     alert("hola " + vm.name);
-  //   });
-  // }
-
-  // beforeRouteLeave: (to, from, next) => {
-  //   if (confirm("Sure to leave?")) {
-  //     next();
-  //   } else {
-  //     next(false);
-  //   }
-  // }
+  /*
+  beforeRouteEnter: (to, from, next) => {
+    // alert("hola, " + this.name);
+    // next();
+    next(vm => {
+      alert("hola " + vm.name);
+    });
+  },
+  beforeRouteLeave: (to, from, next) => {
+    if (confirm("Sure to leave?")) {
+      next();
+    } else {
+      next(false);
+    }
+  }
+  */
 };
 </script>
 

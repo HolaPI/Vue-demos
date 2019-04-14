@@ -62,6 +62,7 @@
         &nbsp;&nbsp;&nbsp;{{totalFare}}&nbsp;RMB
       </p>
       <button class="btn btn-block btn-success">Confirm</button>
+      <!-- <qr-code val="123"></qr-code> -->
     </div>
     <div v-else>{{ cartInfo }}</div>
   </div>
@@ -71,7 +72,7 @@ export default {
   data() {
     return {
       cart: [],
-      cartInfo: "Oops, your cart is empty!"
+      cartInfo: "Whoops, your cart is empty!"
       /*
       // original data
       getMenuItems: {
