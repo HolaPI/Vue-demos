@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <div v-else>{{ cartInfo }}</div>
+    <div v-else class="col-sm-12 col-md-5">{{ cartInfo }}</div>
   </div>
 </template>
 <script>
