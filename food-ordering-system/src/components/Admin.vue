@@ -79,6 +79,7 @@ export default {
       .then(data => {
         // console.log(data);
         let menuArr = [];
+        //data is an object
         for (let key in data) {
           // console.log(key);
           data[key].id = key;

@@ -4,9 +4,12 @@ import VueRouter from 'vue-router'
 import { routes } from './js/routes.js'
 import axios from 'axios'
 import { store } from './store/store.js'
+import VueQrcode from "@chenfengyuan/vue-qrcode"
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.component(VueQrcode.name, VueQrcode)
 
 //global axios prototype setting, http is customised
 Vue.prototype.http = axios

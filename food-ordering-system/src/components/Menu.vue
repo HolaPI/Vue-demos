@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <!-- pizza menu -->
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-7">
       <table class="table">
         <thead class="thead-default">
           <tr>
@@ -35,25 +35,30 @@
       </table>
     </div>
     <!-- my cart -->
-    <div v-if="cart.length > 0" class="col-sm-12 col-md-4">
+    <div v-if="cart.length > 0" class="col-sm-12 col-md-5">
       <table class="table">
         <thead class="thead-default">
           <tr>
             <th>Quantity</th>
             <th>Type</th>
             <th>Price</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <!-- set :key="item.name + item.size" instead of single "item.name" in order to avoid keys duplicated -->
         <tbody v-for="item in cart" :key="item.name + item.size">
           <tr>
             <td>
-              <button @click="deQuantity(item)" class="btn btn-sm">-</button>
+              <button @click="deQuantity(item)" class="btn btn-sm btn-outline-success">-</button>
               <span>&nbsp;{{ item.quantity }}&nbsp;</span>
-              <button @click="inQuantity(item)" class="btn btn-sm">+</button>
+              <!-- <input type="number" v-model="item.quantity"> -->
+              <button @click="inQuantity(item)" class="btn btn-sm btn-outline-success">+</button>
             </td>
             <td>{{ item.name }} - {{ item.size }}</td>
             <td>{{ item.price * item.quantity }}</td>
+            <td>
+              <button @click="removeItem(item)" class="btn btn-sm btn-outline-danger">&times;</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -61,8 +66,14 @@
         <strong>Total Fare:</strong>
         &nbsp;&nbsp;&nbsp;{{totalFare}}&nbsp;RMB
       </p>
-      <button class="btn btn-block btn-success">Confirm</button>
-      <!-- <qr-code val="123"></qr-code> -->
+      <button class="btn btn-block btn-success" @click="showQrcode">Confirm</button>
+      <!-- qrcode for payment -->
+      <div v-if="qrFlag" class="container card-body text-center qr-wrap">
+        <button class="close" @click="qrFlag = !qrFlag">&times;</button>
+        <div class="mx-auto">
+          <qrcode :options="{ width: 360 }" :value="totalFare"></qrcode>
+        </div>
+      </div>
     </div>
     <div v-else>{{ cartInfo }}</div>
   </div>
@@ -72,7 +83,8 @@ export default {
   data() {
     return {
       cart: [],
-      cartInfo: "Whoops, your cart is empty!"
+      cartInfo: "Whoops, your cart is empty!",
+      qrFlag: false
       /*
       // original data
       getMenuItems: {
@@ -201,8 +213,24 @@ export default {
     },
     removeItem(item) {
       this.cart.splice(this.cart.indexOf(item), 1);
+    },
+    showQrcode() {
+      if (!this.qrFlag) {
+        this.qrFlag = !this.qrFlag;
+      } else {
+        this.qrFlag;
+      }
     }
   }
 };
 </script>
+<style scope>
+.qr-wrap .close {
+  opacity: 0;
+}
+.qr-wrap:hover .close {
+  opacity: 0.4;
+}
+</style>
+
 
