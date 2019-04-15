@@ -5,6 +5,7 @@ import Admin from '../components/Admin.vue'
 import About from '../components/about/About.vue'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
+import User from '../components/User.vue'
 import tempReload from '../components/tempReload.vue'
 //second-class routes
 import History from '../components/about/History.vue'
@@ -39,6 +40,7 @@ export const routes = [
             { path: '/ordering-guide', name: 'orderingGuideLink', component: OrderingGuide },
         ]
     },
+    {path: '/user', name: 'userLink', component: User},
     { path: '/login', name: 'loginLink', component: Login },
     { path: '/register', name: 'registerLink', component: Register },
     { path: '/temp-reload', name: 'tempLink', component: tempReload },

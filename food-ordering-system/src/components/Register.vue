@@ -53,4 +53,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+img[alt="register icon"] {
+  width: 120px;
+}
+</style>
+
 

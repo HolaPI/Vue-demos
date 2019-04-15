@@ -3,7 +3,7 @@
     <div class="col-md-12 col-lg-12">
       <div class="card">
         <div class="card-body">
-          <img class="mx-auto d-block" src="../assets/storeLogo.png" alt="register icon">
+          <img class="mx-auto d-block" src="../assets/storeLogo.png" alt="login icon">
           <form @submit.prevent="onSubmit">
             <div class="form-group">
               <label for="email">Enter your email</label>
@@ -60,4 +60,8 @@ export default {
   }
 };
 </script>
-
+<style scoped>
+img[alt="login icon"] {
+  width: 120px;
+}
+</style>

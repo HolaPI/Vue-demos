@@ -224,9 +224,10 @@ export default {
   }
 };
 </script>
-<style scope>
+<style scoped>
 .qr-wrap .close {
   opacity: 0;
+  transition: opacity 0.8s;
 }
 .qr-wrap:hover .close {
   opacity: 0.4;

@@ -7,7 +7,7 @@
       <router-view></router-view>
     </div>
     <br>
-    <div class="container">
+    <div v-if="currentUser" class="container">
       <div class="row">
         <div class="col-sm-12 col-md-4">
           <router-view name="history"></router-view>
@@ -32,6 +32,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    }
   }
 };
 </script>

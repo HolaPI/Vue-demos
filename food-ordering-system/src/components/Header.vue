@@ -50,7 +50,7 @@
             <li>
               <router-link
                 v-show="loginFlag"
-                :to="{name: 'loginLink'}"
+                :to="{name: 'userLink'}"
                 class="nav-link"
               >{{ currentUser }}</router-link>
             </li>
