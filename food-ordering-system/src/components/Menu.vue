@@ -71,7 +71,7 @@
       <div v-if="qrFlag" class="container card-body text-center qr-wrap">
         <button class="close" @click="qrFlag = !qrFlag">&times;</button>
         <div class="mx-auto">
-          <qrcode :options="{ width: 360 }" :value="totalFare"></qrcode>
+          <qrcode :options="{ width: 200}" :value="totalFare"></qrcode>
         </div>
       </div>
     </div>
