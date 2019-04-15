@@ -43,7 +43,7 @@
         <input type="text" class="form-control" v-model="newPizza.price2">
       </div>
     </div>
-    <div class="form-group row">
+    <div class="form-group">
       <button @click="addNewPizza" type="button" class="btn btn-block btn-success">Add to Shelf</button>
     </div>
   </form>
