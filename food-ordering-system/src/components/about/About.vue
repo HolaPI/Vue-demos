@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row md-5">
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-12">
         <!-- navigator -->
         <div class="list-group md-5">
           <router-link tag="li" :to="{name: 'historyLink'}" class="nav-link">
@@ -18,7 +18,7 @@
           </router-link>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-8 col-sm-12">
         <!-- nav-content -->
         <router-view></router-view>
       </div>

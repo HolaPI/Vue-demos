@@ -20,6 +20,7 @@ mongoose.connect('mongodb://localhost/course-M', { useNewUrlParser: true })
 const idea = require('./router/idea')
 const users = require('./router/users')
 const me = require('./router/me')
+const notFound = require('./router/notFound')
 const app = express()
 //handlebars middleware
 app.engine('handlebars', exphbs({
@@ -54,8 +55,13 @@ app.use((req, res, next) => {
 app.use('/idea', idea)
 app.use('/', users.router)
 app.use('/me', me)
+
 //config public-directory as a static file
 app.use(express.static(path.join(__dirname, 'public')))
+
+//404 should be set at the end of routes, all some route may not be found 
+app.use('/*', notFound)
+
 const port = 8088
 app.listen(port, () => {
     console.log(`Port ${port} is working.`)
